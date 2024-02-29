@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* globals.css */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;800&family=Press+Start+2P&display=swap');
+
+/* Apply Press Start 2P font to all elements */
+.press-start-2p-text {
+    font-family: 'Press Start 2P', cursive;
+  }
