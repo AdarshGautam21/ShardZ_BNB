@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React from 'react'
+import React, {useState} from 'react'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -113,6 +113,8 @@ function VideoPage() {
         ]
       };
       
+      const [allVieos, setAllVideos] = useState()
+
   return (
     <div className='bg-[#0D0D0E]' style={{
         backgroundImage: `url(${ellipse.src})`,
@@ -127,7 +129,7 @@ function VideoPage() {
 
             <Sidemenu />
 
-            <div className=' w-full mx-[2vw] md:w-4/5 md:mx-auto space-y-[1vw]' >
+            <div className='w-full px-[2vw] md:w-4/5 md:mx-auto space-y-[1vw]' >
 
                 <div>
                     <h2 className='text-white  text-[5vw] md:text-[2vw] cursor-pointer font-semibold' >Discover</h2>

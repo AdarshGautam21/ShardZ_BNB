@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -20,8 +20,12 @@ import Home from '@/public/images/Home.png'
 import Arrow from '@/public/images/Arrow - Right.png'
 import thumb1 from '@/public/images/Image1.png'
 import thumb2 from '@/public/images/Image2.png'
+import { Button } from "@/components/ui/button"
 import Link from 'next/link';
 function Nav(){
+
+
+    const [walletConnected, setWalletConnected] = useState(false)
 
     return(
         <div>
@@ -115,20 +119,28 @@ function Nav(){
                         
                 
                 </div>
+                {walletConnected?(
+                    <div className='hidden md:block p-[0.1vw] rounded-[0.5vw] bg-gradient-to-tl from-cyan-400 to-black m-2' >
+                    <Link href='/ProfilePage'>
+      
+                      <div className='flex bg-black rounded-[0.5vw]  w-[10vw] h-[2.5vw] space-x-[1vw]  items-center' >
+                     
+                          <img className='w-[2vw] rounded-full ' src="https://github.com/shadcn.png" />
+                 
+                          <p className='  text-[0.7vw] text-white'>Andy William</p>
+                          <MenuIcon className='text-white w-[1vw] h-[1vw] cursor-pointer hover:bg-[#33c2ee50] rounded-[0.2vw] ' />
+                      </div>
+                    </Link>
+                  </div>
+                ):(
+                    <div className='bg-white rounded-full h-[7vw] sm:h-[5vw] md:h-[3vw] flex justify-center items-center  ' >
+                    <Button className='  rounded-full px-[1vw] py-0 text-center md:rounded-[2vw] text-[3vw]  sm:text-[2vw] md:text-[1vw] ' variant="secondary">Connect Wallet</Button>
+                </div>
+                )}
+
             
 
-            <div className='hidden md:block p-[0.1vw] rounded-[0.5vw] bg-gradient-to-tl from-cyan-400 to-black m-2' >
-              <Link href='/ProfilePage'>
-
-                <div className='flex bg-black rounded-[0.5vw]  w-[10vw] h-[2.5vw] space-x-[1vw]  items-center' >
-               
-                    <img className='w-[2vw] rounded-full ' src="https://github.com/shadcn.png" />
-           
-                    <p className='  text-[0.7vw] text-white'>Andy William</p>
-                    <MenuIcon className='text-white w-[1vw] h-[1vw] cursor-pointer hover:bg-[#33c2ee50] rounded-[0.2vw] ' />
-                </div>
-              </Link>
-            </div>
+            
             </div>
         </div>
         <div className=' block md:hidden mx-[2vw]  ' >

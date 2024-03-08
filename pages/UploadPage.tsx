@@ -11,6 +11,9 @@ import logo from '@/public/images/logo.png';
 import Sidemenu from '@/components/main/Sidemenu'
 import Nav from '@/components/main/Nav'
 import Link from 'next/link';
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { upload } from "@lighthouse-web3/sdk";
+import lighthouse from '@lighthouse-web3/sdk'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { zodResolver } from "@hookform/resolvers/zod"
+import {ethers} from 'ethers';
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useForm } from "react-hook-form"
@@ -40,6 +44,7 @@ import { Menu, MenuIcon } from 'lucide-react'
 import VideoSelector from '../components/ui/videoSelector';
 import ThumbnailSelector from '../components/ui/thumbnailSelector';
 import Image from 'next/image';
+import { log } from 'console';
 
 const formSchema = z.object({
   Title: z.string().min(10, {
@@ -54,7 +59,6 @@ const formSchema = z.object({
 
 const UploadPage: React.FC = () => {
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
-
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setSelectedVideo(acceptedFiles[0]);
   }, []);
@@ -79,15 +83,51 @@ const UploadPage: React.FC = () => {
       no: false,
     },
   });
+  
+
+  const progressCallback = (progressData: { total: number; uploaded: number }) => {
+    if (progressData && typeof progressData.total === 'number' && typeof progressData.uploaded === 'number') {
+      const percentageDone = 100 - Number(((progressData.total / progressData.uploaded) * 100).toFixed(2));
+      console.log(percentageDone);
+    }
+  };
+
+  const submit = async () => {
+    if (!selectedVideo) {
+      return;
+    }
+
+    try {
+      const updatedFileName = form.watch('Title');
+      const updatedFile = selectedVideo ? new File([selectedVideo], updatedFileName, { type: selectedVideo.type }) : null;
+      console.log(updatedFile);
+      
+      setSelectedVideo(updatedFile);
+
+      const output = await lighthouse.upload( selectedVideo, '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
+      console.log('File Status:', output);
+      console.log('Visit at https://gateway.lighthouse.storage/ipfs/' + output.data.Hash);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      // Handle error accordingly
+    }
+  };
+  
+  
+
+
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
 
+
+
+
   return (
     <div className='bg-[#0D0D0E]' style={{
-        backgroundImage: `url(${ellipse.src})`,
-        width: '100%',
+      backgroundImage: `url(${ellipse.src})`,
+      width: '100%',
         height: '100%',
         backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
@@ -149,7 +189,7 @@ const UploadPage: React.FC = () => {
                 <ThumbnailSelector/>
 
               
-                <Button type='submit' className='border w-[4vw]s w-[13hw] text-[1.5vw] bg-cyan-400 border-cyan-400 rounded-[0.5vw] text-black mt-[2vw] ' onClick={() => {}} >UPLOAD</Button>
+                <Button type='submit' className='border w-[4vw]s w-[13hw] text-[1.5vw] bg-cyan-400 border-cyan-400 rounded-[0.5vw] text-black mt-[2vw] ' onClick={submit} >UPLOAD</Button>
             </form>
           </Form>
         </div>
@@ -197,7 +237,7 @@ const UploadPage: React.FC = () => {
       </div>
       <div className=' pb-[5vw] md:hidden' >
         
-      { selectedVideo == null ?  <div className='mx-[2vw]  mb-[4vw] md:mb-0 pt-[4vw] flex items-center space-x-[4vw] justify-between' >
+      {/* { selectedVideo == null ?  <div className='mx-[2vw]  mb-[4vw] md:mb-0 pt-[4vw] flex items-center space-x-[4vw] justify-between' >
             <div className='flex space-x-[1vw] cursor-pointer  items-center' >
                 <div className='md:hidden' > 
                 <DropdownMenu  >
@@ -212,8 +252,6 @@ const UploadPage: React.FC = () => {
                         </DropdownMenuContent>
                 </DropdownMenu>
                 </div>
-                {/* <div className='bg-[#2DA6CC] rounded-[0.5vw] w-[5vw] h-[5vw] md:w-[2vw] md:h-[2vw] '></div>
-                <h2 className=' text-[5vw] md:text-[2vw]  text-[#FFFFFF] font-extrabold' >shardZ</h2> */}
                 <Image src={logo} className='w-[15vw]' alt='' />
             </div>
 
@@ -257,7 +295,6 @@ const UploadPage: React.FC = () => {
 
                     <div className='relative ' >
                         <p className='text-white press-start-2p-text text-[4vw] md:text-[1.5vw]' >120</p>
-                        {/* <AlertCircle className='absolute top-[0vw] right-[0vw] w-[1vw] text-white' /> */}
                         
                     </div>
                 </div>
@@ -332,7 +369,7 @@ const UploadPage: React.FC = () => {
                 </div>
             </div>
             </div>
-        </div> }
+        </div> } */}
         <div className='m-[2vw]' >
           <p className='text-white font-semibold text-[5vw] ' >Upload video</p>
         </div>
@@ -419,7 +456,7 @@ const UploadPage: React.FC = () => {
                 <ThumbnailSelector/>
 
               
-                <Button type='submit' className='border h-[4vw] text-[2vw]  md:text-[0.6vw] bg-cyan-400 border-cyan-400 rounded-[0.5vw] text-black font-bold mt-[2vw] ' onClick={() => {}} >UPLOAD</Button>
+                <Button type='submit' className='border h-[4vw] text-[2vw]  md:text-[0.6vw] bg-cyan-400 border-cyan-400 rounded-[0.5vw] text-black font-bold mt-[2vw] ' onClick={submit} >UPLOAD</Button>
             </form>
           </Form>
         </div>

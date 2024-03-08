@@ -32,7 +32,8 @@ import { MenuIcon } from 'lucide-react'
 
 function Sidemenu(){
     return(
-        <div className='mx-[1vw] space-y-[1vw]  items-start ' >
+        // <div className='mx-[1vw] space-y-[1vw]  items-start ' >
+        <div className='mx-[1vw] hidden space-y-[1vw] md:block items-start '  >
             <Link href='/VideoPage'>
 
                 <div className='flex cursor-pointer space-x-[0.5vw] items-center' >
