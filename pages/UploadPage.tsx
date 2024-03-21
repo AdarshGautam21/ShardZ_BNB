@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '../components/ui/button';
 import "@/app/globals.css";
@@ -44,7 +44,10 @@ import { Menu, MenuIcon } from 'lucide-react'
 import VideoSelector from '../components/ui/videoSelector';
 import ThumbnailSelector from '../components/ui/thumbnailSelector';
 import Image from 'next/image';
+import contractABI from '@/public/abi/createNft.json';
+
 import { log } from 'console';
+// import {ethers} from 'ethers'
 
 const formSchema = z.object({
   Title: z.string().min(10, {
@@ -83,14 +86,65 @@ const UploadPage: React.FC = () => {
       no: false,
     },
   });
+
+  const [signer, setSigner] = useState<any>('')
+  const [contract, setContract] = useState<any>('')
+
+
+  useEffect(() => {
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.BrowserProvider((window as any).ethereum);
+    const signer = provider.getSigner();
+    setSigner(signer);
+    const shardZNFTContract = new ethers.Contract("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", contractABI, provider);
+    setContract(shardZNFTContract);
+}, []);
   
 
-  const progressCallback = (progressData: { total: number; uploaded: number }) => {
-    if (progressData && typeof progressData.total === 'number' && typeof progressData.uploaded === 'number') {
-      const percentageDone = 100 - Number(((progressData.total / progressData.uploaded) * 100).toFixed(2));
-      console.log(percentageDone);
-    }
-  };
+  // const progressCallback = (progressData: { total: number; uploaded: number }) => {
+  //   if (progressData && typeof progressData.total === 'number' && typeof progressData.uploaded === 'number') {
+  //     const percentageDone = 100 - Number(((progressData.total / progressData.uploaded) * 100).toFixed(2));
+  //     console.log(percentageDone);
+  //   }
+  // };
+
+
+//   async function createNFT(signerr, cid) {
+//     try {
+      
+//       const transaction = await contract.createNFT(signerr, cid, 'https://gateway.lighthouse.storage/ipfs/QmazbkMEJP5VCpRXoy4g7JkBLDvGpDLjFpguZTz5KETnwo');
+//       const receipt = await transaction.wait();
+
+//       const events = await receipt.events.filter((event) => event.event === 'NFTCreated');
+
+//       const tokenId = events[0].args[0]; 
+//       if (events.length > 0) {
+//           console.log('NFT created successfully. Token ID:', tokenId.toString());
+//       } else {
+//           console.log('NFT creation event not found in the transaction receipt.', events);
+//       }
+//       console.log('NFT created successfully.', transaction);
+//       const overrides = {
+//         gasLimit: 300000 
+//       };
+
+//       const airDrop = await contract.airdropNFT("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", tokenId, overrides)
+//       const airdropReceipt = await airDrop.wait()
+//       console.log("Airdropped", airDrop);
+
+
+//       //const CID = await shardZNFTContract.getTokenCID(tokenId);
+//       //console.log('Token CID for Token ID ${tokenId}: ${cid}');
+//     }
+//     catch (error){
+//      console.log("Error in creating NFT", error)
+//   }
+// }
+
+
+
+
+
 
   const submit = async () => {
     if (!selectedVideo) {
@@ -104,9 +158,10 @@ const UploadPage: React.FC = () => {
       
       setSelectedVideo(updatedFile);
 
-      const output = await lighthouse.upload( selectedVideo, '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
+      const output = await lighthouse.upload( [selectedVideo], '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
       console.log('File Status:', output);
       console.log('Visit at https://gateway.lighthouse.storage/ipfs/' + output.data.Hash);
+
     } catch (error) {
       console.error('Error uploading file:', error);
       // Handle error accordingly

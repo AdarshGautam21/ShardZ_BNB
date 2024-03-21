@@ -1,10 +1,11 @@
 "use client"
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import logo from '@/public/images/logo.png'
+import profile from '@/public/images/profile.png';
 import "@/app/globals.css";
 import video from '@/public/images/videoUp.png'
 import {
@@ -22,10 +23,62 @@ import thumb1 from '@/public/images/Image1.png'
 import thumb2 from '@/public/images/Image2.png'
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
+import { ethers, Provider } from 'ethers';
+declare var ethereum: any;
+
 function Nav(){
 
 
     const [walletConnected, setWalletConnected] = useState(false)
+    const [isConnected, setIsConnected] = useState(false);
+    const [signer, setSigner] = useState('')
+  const [provider, setProvider] = useState('')
+  const [contract, setContract] = useState('')
+  const [accountAddress, setAccountAddress] = useState<Provider | {}>({});
+
+
+    useEffect(() => {
+        checkMetaMask();
+      }, []);
+
+
+      const checkMetaMask = async () => {
+        if (typeof (window as any).ethereum !== 'undefined') {
+          const provider = new ethers.BrowserProvider((window as any).ethereum);
+          try {
+            const accounts = await provider.listAccounts();
+            if (accounts.length > 0) {
+              setIsConnected(true);
+              setAccountAddress(accounts[0]); 
+              console.log(accountAddress);
+              console.log(accounts[0]);
+              
+              
+              
+            } else {
+              setIsConnected(false);
+            }
+          } catch (error) {
+            console.error('Error checking MetaMask connection:', error);
+            setIsConnected(false);
+          }
+        } else {
+          setIsConnected(false);
+        }
+      };
+      
+      
+
+
+      const connectWallet = async () => {
+        try {
+          await ethereum.request({ method: 'eth_requestAccounts' });
+          checkMetaMask();
+        } catch (error) {
+          console.error('Error connecting MetaMask:', error);
+        }
+      };
+
 
     return(
         <div>
@@ -115,17 +168,20 @@ function Nav(){
 
                 <div className='block md:hidden' >
             
-                        <img className='w-[6vw] h-[6vw] rounded-full ' src="https://github.com/shadcn.png" />
+                        {/* <img className='w-[6vw] h-[6vw] rounded-full ' src="https://github.com/shadcn.png" /> */}
+                        <Image className='w-[6vw] h-[6vw] rounded-full' src={profile} alt='profile' />
                         
                 
                 </div>
-                {walletConnected?(
+                {isConnected?(
                     <div className='hidden md:block p-[0.1vw] rounded-[0.5vw] bg-gradient-to-tl from-cyan-400 to-black m-2' >
                     <Link href='/ProfilePage'>
       
                       <div className='flex bg-black rounded-[0.5vw]  w-[10vw] h-[2.5vw] space-x-[1vw]  items-center' >
                      
-                          <img className='w-[2vw] rounded-full ' src="https://github.com/shadcn.png" />
+                          {/* <img className='w-[2vw] rounded-full ' src="@/public/images/profile.png" /> */}
+
+                          <Image className='w-[2vw] rounded-full ' src={profile} alt='profile' />
                  
                           <p className='  text-[0.7vw] text-white'>Andy William</p>
                           <MenuIcon className='text-white w-[1vw] h-[1vw] cursor-pointer hover:bg-[#33c2ee50] rounded-[0.2vw] ' />
@@ -134,7 +190,7 @@ function Nav(){
                   </div>
                 ):(
                     <div className='bg-white rounded-full h-[7vw] sm:h-[5vw] md:h-[3vw] flex justify-center items-center  ' >
-                    <Button className='  rounded-full px-[1vw] py-0 text-center md:rounded-[2vw] text-[3vw]  sm:text-[2vw] md:text-[1vw] ' variant="secondary">Connect Wallet</Button>
+                    <Button className='  rounded-full px-[1vw] py-0 text-center md:rounded-[2vw] text-[3vw]  sm:text-[2vw] md:text-[1vw] ' variant="secondary" onClick={connectWallet}>Connect Wallet</Button>
                 </div>
                 )}
 

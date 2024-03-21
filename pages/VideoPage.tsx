@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -24,6 +24,8 @@ import Link from 'next/link';
 import Nav from '@/components/main/Nav'
 import Sidemenu from '@/components/main/Sidemenu';
 import VideoSection from '../components/ui/videos';
+
+
 function VideoPage() {
     var settings = {
         arrows: false,
@@ -112,8 +114,8 @@ function VideoPage() {
           }
         ]
       };
+
       
-      const [allVieos, setAllVideos] = useState()
 
   return (
     <div className='bg-[#0D0D0E]' style={{

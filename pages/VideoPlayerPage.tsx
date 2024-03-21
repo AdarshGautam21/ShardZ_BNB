@@ -26,6 +26,7 @@ import VideoSection from '../components/ui/videos';
 import { Button } from '../components/ui/button';
 import Recommendation from '../components/ui/recommendations';
 import Comments from '../components/ui/comments';
+import { useRouter } from 'next/router';
 function VideoPlayer() {
     var settings = {
         arrows: false,
@@ -70,6 +71,18 @@ function VideoPlayer() {
           }
         ]
       };
+
+
+      const router = useRouter();
+      const { video } = router.query;
+
+      let VideoInfo;
+  if (video) {
+    VideoInfo = JSON.parse(decodeURIComponent(video as string));
+  }
+
+
+
   return (
     <div className='bg-[#0D0D0E]' style={{
         backgroundImage: `url(${ellipse.src})`,
@@ -110,7 +123,7 @@ function VideoPlayer() {
         <div className=" mx-[2vw] md:mx-[20vw] mt-[2vw] rounded-[1vw] ">
             <video
               className="w-full cursor-pointer h-full rounded-[0.5vw] "
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              src={`https://gateway.lighthouse.storage/ipfs/${VideoInfo.cid}`}
               title="YouTube video player"
               controls= {true}
             ></video>
