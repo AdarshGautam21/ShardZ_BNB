@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {ethers} from 'ethers';
+import {ethers, Contract, Provider, JsonRpcSigner} from 'ethers';
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useForm } from "react-hook-form"
@@ -91,14 +91,39 @@ const UploadPage: React.FC = () => {
   const [contract, setContract] = useState<any>('')
 
 
-  useEffect(() => {
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const provider = new ethers.BrowserProvider((window as any).ethereum);
-    const signer = provider.getSigner();
-    setSigner(signer);
-    const shardZNFTContract = new ethers.Contract("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", contractABI, provider);
-    setContract(shardZNFTContract);
+//   useEffect(() => {
+//     // const provider = new ethers.providers.Web3Provider(window.ethereum);
+//     const provider = new ethers.BrowserProvider((window as any).ethereum);
+//     const signer = provider.getSigner();
+//     setSigner(signer);
+//     console.log(signer);
+//     const signerr = await signer;
+    
+//     const shardZNFTContract = new ethers.Contract("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", contractABI, signer);
+//     setContract(shardZNFTContract);
+// }, []);
+
+
+useEffect(() => {
+  const initializeProvider = async () => {
+      try {
+          // const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const provider = new ethers.BrowserProvider((window as any).ethereum);
+          const signer = await provider.getSigner();
+          setSigner(signer);
+          console.log(signer);
+          const shardZNFTContract = new ethers.Contract("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", contractABI, signer);
+          setContract(shardZNFTContract);
+      } catch (error) {
+          console.error("Error initializing provider:", error);
+      }
+  };
+
+  initializeProvider();
 }, []);
+
+
+
   
 
   // const progressCallback = (progressData: { total: number; uploaded: number }) => {
@@ -108,39 +133,57 @@ const UploadPage: React.FC = () => {
   //   }
   // };
 
+  //const CID = await shardZNFTContract.getTokenCID(tokenId);
+  //console.log('Token CID for Token ID ${tokenId}: ${cid}');
 
-//   async function createNFT(signerr, cid) {
-//     try {
+
+
+  interface NFTCreatedEvent {
+    event: string; // Should be "NFTCreated"
+    args: {
+      tokenId: string;
+    };
+  }
+  
+
+  async function createNFT(signer: JsonRpcSigner, cid: string): Promise<any> {
+    try {
+      console.log(contract);
       
-//       const transaction = await contract.createNFT(signerr, cid, 'https://gateway.lighthouse.storage/ipfs/QmazbkMEJP5VCpRXoy4g7JkBLDvGpDLjFpguZTz5KETnwo');
-//       const receipt = await transaction.wait();
+      const transaction = await contract.createNFT(signer, cid, 'https://gateway.lighthouse.storage/ipfs/QmazbkMEJP5VCpRXoy4g7JkBLDvGpDLjFpguZTz5KETnwo');
+      const receipt = await transaction.wait();
 
-//       const events = await receipt.events.filter((event) => event.event === 'NFTCreated');
+      console.log(receipt);
+      
 
-//       const tokenId = events[0].args[0]; 
-//       if (events.length > 0) {
-//           console.log('NFT created successfully. Token ID:', tokenId.toString());
-//       } else {
-//           console.log('NFT creation event not found in the transaction receipt.', events);
-//       }
-//       console.log('NFT created successfully.', transaction);
-//       const overrides = {
-//         gasLimit: 300000 
-//       };
+      // const events: NFTCreatedEvent[] = receipt.events.filter(
+      //   (event: NFTCreatedEvent) => event.event === 'NFTCreated'
+      // );
 
-//       const airDrop = await contract.airdropNFT("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", tokenId, overrides)
-//       const airdropReceipt = await airDrop.wait()
-//       console.log("Airdropped", airDrop);
+      // const tokenId = events[0].args.tokenId;
+      // if (events.length > 0) {
+      //     console.log('NFT created successfully. Token ID:', tokenId.toString());
+      // } else {
+      //     console.log('NFT creation event not found in the transaction receipt.', events);
+      // }
+      // console.log('NFT created successfully.', transaction);
+      // const overrides = {
+      //   gasLimit: 300000 
+      // };
 
 
-//       //const CID = await shardZNFTContract.getTokenCID(tokenId);
-//       //console.log('Token CID for Token ID ${tokenId}: ${cid}');
-//     }
-//     catch (error){
-//      console.log("Error in creating NFT", error)
-//   }
-// }
 
+      // const airDrop = await contract.airdropNFT("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", tokenId, overrides)
+      // const airdropReceipt = await airDrop.wait()
+      // console.log("Airdropped", airDrop);
+
+
+    }
+    catch (error){
+      console.log("Error in creating NFT", error)
+    }
+  }
+  
 
 
 
@@ -158,15 +201,30 @@ const UploadPage: React.FC = () => {
       
       setSelectedVideo(updatedFile);
 
-      const output = await lighthouse.upload( [selectedVideo], '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
+      const output = await lighthouse.upload( [updatedFile], '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
       console.log('File Status:', output);
       console.log('Visit at https://gateway.lighthouse.storage/ipfs/' + output.data.Hash);
+      
+      // const address = await signer.getAddress();
+      // console.log(signer);
+      
+    const signerr = await signer;
+    const address = signerr.getAddress();
+    console.log(signerr.address);
+    // console.log(address);
+
+    // const shardZNFTContract = new ethers.Contract("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", contractABI, signerr);
+    // setContract(shardZNFTContract);
+    
+    
+      
+    createNFT(signerr.address , output.data.Hash)
 
     } catch (error) {
       console.error('Error uploading file:', error);
-      // Handle error accordingly
     }
   };
+  
   
   
 

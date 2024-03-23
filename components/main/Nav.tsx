@@ -50,8 +50,8 @@ function Nav(){
             if (accounts.length > 0) {
               setIsConnected(true);
               setAccountAddress(accounts[0]); 
-              console.log(accountAddress);
-              console.log(accounts[0]);
+              // console.log(accountAddress);
+              // console.log(accounts[0]);
               
               
               
