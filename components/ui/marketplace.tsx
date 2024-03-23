@@ -6,15 +6,15 @@ import Link from 'next/link'
 const Market = () => {
   const rewards = [
     { id: 1, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: true , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: true , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
-    { id: 1, creator: '@Andy William' , collectable: true , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 2, creator: '@Andy William' , collectable: true , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 3, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 4, creator: '@Andy William' , collectable: true , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 5, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 6, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 7, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 8, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 9, creator: '@Andy William' , collectable: false , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
+    { id: 10, creator: '@Andy William' , collectable: true , title: 'Basic how to get into web 2 ecosystem', cost: '0.8 ETH' , thumbnail },
 
   ];
 

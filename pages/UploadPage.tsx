@@ -60,6 +60,7 @@ const formSchema = z.object({
   no: z.boolean(),
 });
 
+
 const UploadPage: React.FC = () => {
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -154,6 +155,7 @@ useEffect(() => {
       const receipt = await transaction.wait();
 
       console.log(receipt);
+      console.log(transaction);
       
 
       // const events: NFTCreatedEvent[] = receipt.events.filter(
@@ -195,13 +197,19 @@ useEffect(() => {
     }
 
     try {
-      const updatedFileName = form.watch('Title');
+
+      // const thumbnailOutput = await lighthouse.upload( [thumbnail], '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
+      // console.log(thumbnail);27423fd5.3c405e09d4dc4b1e8b5e78ff342ba5c2
+      const thumbnailOutput = await lighthouse.upload( [thumbnail], '27423fd5.3c405e09d4dc4b1e8b5e78ff342ba5c2');
+      
+
+      const updatedFileName = form.watch('Title') + " " + thumbnailOutput.data.Hash;
       const updatedFile = selectedVideo ? new File([selectedVideo], updatedFileName, { type: selectedVideo.type }) : null;
       console.log(updatedFile);
       
       setSelectedVideo(updatedFile);
 
-      const output = await lighthouse.upload( [updatedFile], '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
+      const output = await lighthouse.upload( [updatedFile], '27423fd5.3c405e09d4dc4b1e8b5e78ff342ba5c2');
       console.log('File Status:', output);
       console.log('Visit at https://gateway.lighthouse.storage/ipfs/' + output.data.Hash);
       
@@ -209,7 +217,7 @@ useEffect(() => {
       // console.log(signer);
       
     const signerr = await signer;
-    const address = signerr.getAddress();
+    // const address = signerr.getAddress();
     console.log(signerr.address);
     // console.log(address);
 
@@ -235,6 +243,28 @@ useEffect(() => {
   }
 
 
+
+
+
+
+
+  const [selectedThumbnail, setSelectedThumbnail] = useState<string | null>(null);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedThumbnail(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const removeThumbnail = () => {
+    setSelectedThumbnail(null);
+  }
 
 
   return (
@@ -299,7 +329,48 @@ useEffect(() => {
                     <p className='text-white text-[1vw]'>Thumbnail</p>
                     <p className='text-white text-[0.7vw]' >Select or upload a picture that shows what&apos;s in your video. A good thumbnail stands out and draws viewers&apos; attention. </p>
                 </div>
-                <ThumbnailSelector/>
+                {/* <ThumbnailSelector /> */}
+                <div className="mt-4 cursor-pointer ">
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+        id="thumbnail"
+      />
+      <label
+        htmlFor="thumbnail"
+        className={selectedThumbnail ? "" : " h-[20vw] w-[30vw] border border-dashed border-gray-500  bg-[#00000033] rounded-[1vw] md:h-[5vw] text-center md:w-[10vw] flex justify-center items-center"}
+      >
+        {selectedThumbnail ? (
+          <div className='w-[25vw]' >
+            <div className='flex justify-between' >
+              <img
+              src={selectedThumbnail}
+              alt="Selected Thumbnail"
+              className=" w-[10vw] max-h-32 object-cover rounded-lg  border  border-cyan-400"
+              />
+              <img
+              src={selectedThumbnail}
+              alt="Selected Thumbnail"
+              className=" w-[10vw] max-h-32 object-cover rounded-lg  border  border-cyan-400"
+              />
+            </div>
+            
+            <Button className='border w-[4vw] h-[2vw] text-[0.6vw] border-cyan-400 rounded-[0.5vw] text-cyan-400 font-semibold mt-[2vw] ' onClick={removeThumbnail} >REMOVE</Button>
+
+          </div>
+
+        ) : (
+          <div>
+            <p className="text-white text-[5vw] md:text-[1vw] ">+</p>
+            <p className='text-white text-[3vw] md:text-[1vw] ' >Upload a thumbnail</p>
+          </div>
+          
+
+        )}
+      </label>
+    </div>
 
               
                 <Button type='submit' className='border w-[4vw]s w-[13hw] text-[1.5vw] bg-cyan-400 border-cyan-400 rounded-[0.5vw] text-black mt-[2vw] ' onClick={submit} >UPLOAD</Button>

@@ -15,7 +15,7 @@ const ThumbnailSelector: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
-  const remove = () => {
+  const removeThumbnail = () => {
     setSelectedThumbnail(null);
   }
 
@@ -47,7 +47,7 @@ const ThumbnailSelector: React.FC = () => {
               />
             </div>
             
-            <Button className='border w-[4vw] h-[2vw] text-[0.6vw] border-cyan-400 rounded-[0.5vw] text-cyan-400 font-semibold mt-[2vw] ' onClick={remove} >REMOVE</Button>
+            <Button className='border w-[4vw] h-[2vw] text-[0.6vw] border-cyan-400 rounded-[0.5vw] text-cyan-400 font-semibold mt-[2vw] ' onClick={removeThumbnail} >REMOVE</Button>
 
           </div>
 

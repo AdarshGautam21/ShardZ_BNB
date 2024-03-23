@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import "@/app/globals.css";
 import Image from 'next/image';
 import Slider from 'react-slick';
@@ -27,6 +27,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from 'next/link';
 import Market from '../components/ui/marketplace';
+import { ethers } from 'ethers';
+import contractABI from '@/public/abi/createNft.json'
+
 
 function MarketPlace() {
     const settings = {
@@ -114,6 +117,70 @@ function MarketPlace() {
             }
         ]
     };
+
+
+    const [signer, setSigner] = useState<any>('')
+  const [contract, setContract] = useState<any>('')
+
+  const transactionList: any[] = [];
+
+  
+
+    const fetchData = async () => {
+        try {
+        //   if (window.ethereum as any) {
+            const provider = new ethers.BrowserProvider((window as any).ethereum);
+            const signer = await provider.getSigner();
+            setSigner(signer);
+            const shardZNFTContract = new ethers.Contract("0x4335e4fFfD017D382dFae9131E966555f0E41B8C", contractABI, signer);
+            setContract(shardZNFTContract);
+      
+            // Now, the signer and contract are set, proceed with the loop
+            for (let i = 1; ; i++) {
+                try{
+                const transaction = await shardZNFTContract.getTokenCID(i);
+                const owner = await shardZNFTContract.ownerOf(i);
+                transactionList.push([transaction, owner]);
+                }
+                catch(err){
+                    break;
+                }
+            }
+
+
+            console.log(transactionList);
+
+            
+
+            
+            // const filter = shardZNFTContract.filters.NFTCreated();
+            // console.log(filter);
+             
+            console.log(transactionList);
+        //   } else {
+        //     console.error('MetaMask or similar provider not detected.');
+        //   }
+        } catch (error) {
+          console.error('Error setting up signer and contract:', error);
+        }
+      };
+      
+      
+      
+      
+      
+      
+      
+        useEffect(() => {
+          // const provider = new ethers.providers.Web3Provider(window.ethereum);
+          // const signer = provider.getSigner();
+          // setSigner(signer);
+          // const shardZNFTContract = new ethers.Contract("0x4335e4fFfD017D382dFae9131E966555f0E41B8C", contractABI, signer);
+          // setContract(shardZNFTContract);
+          fetchData();
+      
+      }, []); 
+
 
     return (
         <div className='bg-[#0D0D0E]' style={{

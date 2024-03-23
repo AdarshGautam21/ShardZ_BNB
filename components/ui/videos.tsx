@@ -38,9 +38,14 @@ const VideoSection = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await lighthouse.getUploads("634d38b8.9e4eefb3ff5940b78276e56b7403a967");
+        const response = await lighthouse.getUploads("27423fd5.3c405e09d4dc4b1e8b5e78ff342ba5c2");
         if (response.data && response.data.fileList) {
-          setAllVideos(response.data.fileList);
+          const imageExtensions = [".jpg", ".jpeg", ".png"];
+          const nonImageFiles = response.data.fileList.filter(file => {
+            const extension = file.fileName.slice(file.fileName.lastIndexOf('.')).toLowerCase(); // Get the file extension
+            return !imageExtensions.includes(extension); // Filter out files with image extensions
+        });
+          setAllVideos(nonImageFiles);
           console.log(allVideos);
           console.log(response.data.fileList);
           
@@ -68,12 +73,12 @@ const VideoSection = () => {
             <div className='bg-gradient-to-b from-[#fff0] via-[#ffffff2d] to-cyan-400  p-[0.3vw] md:p-[0.1vw] rounded-[0.5vw]' >
                 <div key={video.id} className="bg-black   text-white rounded-[0.5vw] overflow-hidden">
                   <div className='relative' >
-                  {/* <img src={video.thumbnail.src} alt={video.title} className="w-full" /> */}
+                  <img src={`https://gateway.lighthouse.storage/ipfs/${video.fileName.substring(video.fileName.lastIndexOf(' ') + 1)}`} alt={video.fileName} className="w-full" />
                   {/* <div className='absolute top-[1vw] px-[1vw] text-[2vw] md:text-[1.2vw] lg:text-[0.9vw] rounded-[0.5vw]  bg-[#0000002f] right-[1vw] ' >{video.time}</div> */}
                   </div>
                     <div className="p-[1vw]">
                         {/* <p className='  text-[3vw] md:text-[1vw] lg:text-[0.8vw] ' >{video.creator}</p> */}
-                        <p className=" text-sm md:text-[1vw]  font-semibold mb-2">{video.fileName}</p>
+                        <p className=" text-sm md:text-[1vw]  font-semibold mb-2">{video.fileName.substring(0, video.fileName.lastIndexOf(' '))}</p>
                         <div className='flex text-center text-[2.2vw] md:text-[0.8vw] text-[#808191] space-x-[0.5vw]' >
                             {/* {video.views} */}
                             <div className='text-center px-[1vw]' ><p>.</p></div>
