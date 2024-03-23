@@ -10,6 +10,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import logo from '@/public/images/logo.png';
 import Sidemenu from '@/components/main/Sidemenu'
 import Nav from '@/components/main/Nav'
+import Lottie, {LottieProps} from 'react-lottie';
+import uploadAnimationData from '@/public/uploading.json'
+import successfulAnimation from '@/public/successful.json'
 import Link from 'next/link';
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { upload } from "@lighthouse-web3/sdk";
@@ -45,7 +48,7 @@ import VideoSelector from '../components/ui/videoSelector';
 import ThumbnailSelector from '../components/ui/thumbnailSelector';
 import Image from 'next/image';
 import contractABI from '@/public/abi/createNft.json';
-
+import { useRouter } from 'next/router';
 import { log } from 'console';
 // import {ethers} from 'ethers'
 
@@ -61,7 +64,9 @@ const formSchema = z.object({
 });
 
 
+
 const UploadPage: React.FC = () => {
+  const router = useRouter();
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setSelectedVideo(acceptedFiles[0]);
@@ -156,7 +161,13 @@ useEffect(() => {
 
       console.log(receipt);
       console.log(transaction);
+      setUploading(false);
+
+      setSuccessful(true);
       
+      setTimeout(() => {
+        router.push('/VideoPage'); // Redirect to another page
+    }, 6000);
 
       // const events: NFTCreatedEvent[] = receipt.events.filter(
       //   (event: NFTCreatedEvent) => event.event === 'NFTCreated'
@@ -197,6 +208,7 @@ useEffect(() => {
     }
 
     try {
+      setUploading(true);
 
       // const thumbnailOutput = await lighthouse.upload( [thumbnail], '634d38b8.9e4eefb3ff5940b78276e56b7403a967');
       // console.log(thumbnail);27423fd5.3c405e09d4dc4b1e8b5e78ff342ba5c2
@@ -267,6 +279,15 @@ useEffect(() => {
   }
 
 
+
+
+  const [uploading, setUploading] = useState(false);
+  const [successful, setSuccessful] = useState(false);
+
+
+
+
+
   return (
     <div className='bg-[#0D0D0E]' style={{
       backgroundImage: `url(${ellipse.src})`,
@@ -275,14 +296,39 @@ useEffect(() => {
         backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
       }} >
+
+{uploading && <div style={{position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
+    zIndex: 9999, // Ensure the overlay is on top of other content
+    filter: 'grayscale(100%)'}} />}
+
+
         <div className='hidden md:block' >
         
         <Nav />
+        
+        
 
       <h1 className='text-center text-[#33C1EE] mr-[2vw] mt-[2vw] font-bold text-[2vw]' >Upload a Video</h1>
 
       <div className='flex justify-around ' >
         <div className='text-white w-[50%] m-[5vw] ' >
+
+        {uploading && (
+                <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10000 }}>
+                    <Lottie options={{ animationData: uploadAnimationData }} height={300} width={300} />
+                </div>
+            )}
+          {successful && (
+                <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10000 }}>
+                    <Lottie options={{ animationData: successfulAnimation, loop: false }} height={300} width={300} speed= {0.5}/>
+                </div>
+            )}
+        
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-[100%]">
               <FormField
