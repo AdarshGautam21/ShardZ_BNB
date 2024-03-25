@@ -316,6 +316,7 @@ useEffect(() => {
       <h1 className='text-center text-[#33C1EE] mr-[2vw] mt-[2vw] font-bold text-[2vw]' >Upload a Video</h1>
 
       <div className='flex justify-around ' >
+          <Form {...form}>
         <div className='text-white w-[50%] m-[5vw] ' >
 
         {uploading && (
@@ -329,16 +330,16 @@ useEffect(() => {
                 </div>
             )}
         
-          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-[100%]">
               <FormField
+                
                 control={form.control}
                 name="Title"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel> Title (required) </FormLabel>
                     <FormControl className='rounded-[0.5vw]' >
-                      <Input className='bg-[#00000033]' {...field} />
+                      <Input required className='bg-[#00000033]' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -361,7 +362,7 @@ useEffect(() => {
                 <p className='text-white text-[1vw]' >Audience</p>
                 <p className='text-white text-[0.7vw]' >Is this video made for kids? (required)</p>
               </div>
-              <RadioGroup defaultValue="option-one">
+              <RadioGroup defaultValue="option-one" required>
                 <div className="flex items-center space-x-2">
                     <RadioGroupItem value="option-one" id="option-one" />
                     <Label className='text-white' htmlFor="option-one">Yes, it&apos;s made for kids.</Label>
@@ -383,6 +384,7 @@ useEffect(() => {
         onChange={handleFileChange}
         className="hidden"
         id="thumbnail"
+        required
       />
       <label
         htmlFor="thumbnail"
@@ -421,7 +423,10 @@ useEffect(() => {
               
                 <Button type='submit' className='border w-[4vw]s w-[13hw] text-[1.5vw] bg-cyan-400 border-cyan-400 rounded-[0.5vw] text-black mt-[2vw] ' onClick={submit} >UPLOAD</Button>
             </form>
-          </Form>
+
+
+
+
         </div>
 
         <div className='w-[50%] m-[5vw] rounded-[0.5vw]' >
@@ -434,10 +439,10 @@ useEffect(() => {
           className:`${selectedVideo ? ''
           :'p-[1vw] h-[25vw] flex justify-center text-center bg-[#FFFFFF0F] items-center border border-dashed border-gray-400 rounded-[1vw]  cursor-pointer'
         }`
-
-        })}
+        
+      })}
       >
-        <input {...getInputProps()} />
+        <input {...getInputProps()} required/>
         {selectedVideo ? (
           <div>
           <div className="relative ">
@@ -456,13 +461,17 @@ useEffect(() => {
             <p className="text-white font-semibold text-[1.5vw] ">
               +
             </p>
-            <p className='text-white font-semibold text-[1.5vw] ' >Upload a video</p>
+            <p className='text-white font-semibold text-[1.5vw] ' >Upload a Video</p>
           </div>
         )}
       </div>
      
     </div>
         </div>
+          </Form>
+
+
+
       </div>
       </div>
       <div className=' pb-[5vw] md:hidden' >
