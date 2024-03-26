@@ -28,7 +28,7 @@ import logo from '@/public/images/logo.png'
 import coin from '@/public/images/coin.png'
 import ellipse from '@/public/images/EllipseHome.png'
 import { MenuIcon } from 'lucide-react'
-import VideoSection from '../components/ui/videos';
+import MyVideos from '../components/ui/myVideos';
 import Playlist from '../components/ui/playlist';
 import Sidemenu from '@/components/main/Sidemenu'
 import Nav from '@/components/main/Nav'
@@ -92,12 +92,12 @@ function ProfilePage() {
                 
                     
                 
-                <div className='w-[95%]' >
+                {/* <div className='w-[95%]' >
                     <div>
-                        <h2 className='text-white text-[3vw] md:text-[2vw] cursor-pointer font-semibold' >Platlist</h2>
+                        <h2 className='text-white text-[3vw] md:text-[2vw] cursor-pointer font-semibold' >Playlist</h2>
                     </div>
                     <Playlist />
-                </div>
+                </div> */}
 
                 <div className=' w-[95%] ' >
 
@@ -105,7 +105,7 @@ function ProfilePage() {
                         <h2 className='text-white text-[3vw] md:text-[2vw] cursor-pointer font-semibold' >Recently Uploaded</h2>
                     </div>
 
-                    <VideoSection/>
+                    <MyVideos/>
 
                 </div>
             </div>
@@ -251,7 +251,7 @@ function ProfilePage() {
                 </div>
                 <div className=' md:hidden mx-[2vw]' >
                     <p className='text-white text-[5vw] sm:text-[4vw] md:text-[2vw] mx-[2vw] cursor-pointer font-semibold' >My Videos</p>
-                    <VideoSection/>
+                    <MyVideos/>
                 </div>
                 
         </div>
