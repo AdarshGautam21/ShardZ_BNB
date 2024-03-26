@@ -132,7 +132,8 @@ function MarketPlace() {
             const provider = new ethers.BrowserProvider((window as any).ethereum);
             const signer = await provider.getSigner();
             setSigner(signer);
-            const shardZNFTContract = new ethers.Contract("0x4335e4fFfD017D382dFae9131E966555f0E41B8C", contractABI, signer);
+            // const shardZNFTContract = new ethers.Contract("0x4335e4fFfD017D382dFae9131E966555f0E41B8C", contractABI, signer);
+            const shardZNFTContract = new ethers.Contract("0x23Ef0e4f4031c2d0DeeB4C1f7b8fe097a8276342", contractABI, signer);
             setContract(shardZNFTContract);
       
             // Now, the signer and contract are set, proceed with the loop

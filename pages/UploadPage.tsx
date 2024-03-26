@@ -118,7 +118,7 @@ useEffect(() => {
           const signer = await provider.getSigner();
           setSigner(signer);
           console.log(signer);
-          const shardZNFTContract = new ethers.Contract("0x0aB61D5cdc5091326a796D48eEE6a124f8ea8C81", contractABI, signer);
+          const shardZNFTContract = new ethers.Contract("0x23Ef0e4f4031c2d0DeeB4C1f7b8fe097a8276342", contractABI, signer);
           setContract(shardZNFTContract);
       } catch (error) {
           console.error("Error initializing provider:", error);
@@ -156,7 +156,8 @@ useEffect(() => {
     try {
       console.log(contract);
       
-      const transaction = await contract.createNFT(signer, cid, 'https://gateway.lighthouse.storage/ipfs/QmazbkMEJP5VCpRXoy4g7JkBLDvGpDLjFpguZTz5KETnwo');
+      // const transaction = await contract.createNFT(signer, cid, 'https://gateway.lighthouse.storage/ipfs/QmazbkMEJP5VCpRXoy4g7JkBLDvGpDLjFpguZTz5KETnwo');
+      const transaction = await contract.createNFT(signer, cid);
       const receipt = await transaction.wait();
 
       console.log(receipt);
