@@ -128,7 +128,6 @@ function MarketPlace() {
 
     const fetchData = async () => {
         try {
-        //   if (window.ethereum as any) {
             const provider = new ethers.BrowserProvider((window as any).ethereum);
             const signer = await provider.getSigner();
             setSigner(signer);
@@ -136,7 +135,6 @@ function MarketPlace() {
             const shardZNFTContract = new ethers.Contract("0x23Ef0e4f4031c2d0DeeB4C1f7b8fe097a8276342", contractABI, signer);
             setContract(shardZNFTContract);
       
-            // Now, the signer and contract are set, proceed with the loop
             for (let i = 1; ; i++) {
                 try{
                 const transaction = await shardZNFTContract.getTokenCID(i);
@@ -147,16 +145,9 @@ function MarketPlace() {
                     break;
                 }
             }
-
-
             console.log(transactionList);
-
-            
-
-            
             // const filter = shardZNFTContract.filters.NFTCreated();
             // console.log(filter);
-             
             console.log(transactionList);
         //   } else {
         //     console.error('MetaMask or similar provider not detected.');

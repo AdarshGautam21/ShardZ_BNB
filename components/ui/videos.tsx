@@ -47,7 +47,7 @@ const VideoSection = () => {
         });
           setAllVideos(nonImageFiles);
           console.log(allVideos);
-          console.log(response.data.fileList);
+          // console.log(response.data.fileList);
           
           
         } else {
