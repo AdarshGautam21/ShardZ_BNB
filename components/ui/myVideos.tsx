@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import thumbnail from '@/public/images/thumbnail.png'
 import Link from 'next/link'
 import lighthouse from '@lighthouse-web3/sdk'
+import contractABI from '@/public/abi/createNft.json'
+import {ethers} from 'ethers';
 
 const MyVideos = () => {
   const videos = [
@@ -35,18 +37,52 @@ const MyVideos = () => {
   
   const [allVideos, setAllVideos] = useState<FileObject[]>([]);
 
+  const [signer, setSigner] = useState<any>('')
+  const [contract, setContract] = useState<any>('')
+
+  const outputList: any[] = [];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await lighthouse.getUploads("27423fd5.3c405e09d4dc4b1e8b5e78ff342ba5c2");
-        if (response.data && response.data.fileList) {
-          const imageExtensions = [".jpg", ".jpeg", ".png"];
-          const nonImageFiles = response.data.fileList.filter(file => {
-            const extension = file.fileName.slice(file.fileName.lastIndexOf('.')).toLowerCase(); // Get the file extension
-            return !imageExtensions.includes(extension); // Filter out files with image extensions
+        const provider = new ethers.BrowserProvider((window as any).ethereum);
+            const signer = await provider.getSigner();
+            setSigner(signer);
+            // const shardZNFTContract = new ethers.Contract("0x4335e4fFfD017D382dFae9131E966555f0E41B8C", contractABI, signer);
+            const shardZNFTContract = new ethers.Contract("0x23Ef0e4f4031c2d0DeeB4C1f7b8fe097a8276342", contractABI, signer);
+            setContract(shardZNFTContract);
+            
+            const response = await lighthouse.getUploads("27423fd5.3c405e09d4dc4b1e8b5e78ff342ba5c2");
+            if (response.data && response.data.fileList) {
+      
+            for (let i = 1; ; i++) {
+                try{
+                const transaction = await shardZNFTContract.getTokenCID(i);
+                const owner = await shardZNFTContract.ownerOf(i);
+                if(owner == signer.address){
+                  // outputList.push([transaction, owner]);
+                  outputList.push(transaction);
+                }
+                }
+                catch(err){
+                  console.log("Error:", err)
+                    break;
+                }
+            }
+
+
+        //   const imageExtensions = [".jpg", ".jpeg", ".png"];
+        //   const nonImageFiles = response.data.fileList.filter(file => {
+        //     const extension = file.fileName.slice(file.fileName.lastIndexOf('.')).toLowerCase(); // Get the file extension
+        //     return !imageExtensions.includes(extension); // Filter out files with image extensions
+        // });
+
+        const filteredFiles = response.data.fileList.filter(file => {
+          return outputList.includes(file.cid);
         });
-          setAllVideos(nonImageFiles);
-          console.log(allVideos);
+
+          setAllVideos(filteredFiles);
+          console.log(filteredFiles);
         //   console.log(response.data.fileList);
           
           

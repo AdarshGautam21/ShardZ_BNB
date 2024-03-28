@@ -145,6 +145,7 @@ function MarketPlace() {
                     break;
                 }
             }
+            
             console.log(transactionList);
             // const filter = shardZNFTContract.filters.NFTCreated();
             // console.log(filter);
