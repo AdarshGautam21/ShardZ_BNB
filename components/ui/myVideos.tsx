@@ -4,8 +4,9 @@ import Link from 'next/link'
 import lighthouse from '@lighthouse-web3/sdk'
 import contractABI from '@/public/abi/createNft.json'
 import {ethers} from 'ethers';
+import { useWeb3 } from '../main/Web3Context';
 
-const MyVideos = () => {
+const MyVideos: React.FC = () => {
   const videos = [
     { id: 1, creator: 'Andy William' , time: '7 min', title: 'Basic how to get into web 2 ecosystem', views: '52 views' , timeAdded: '2 weeks ago' , thumbnail },
     { id: 2, creator: 'Andy William' , time: '7 min', title: 'Basic how to get into web 2 ecosystem', views: '52 views' , timeAdded: '2 weeks ago' , thumbnail },
@@ -41,6 +42,8 @@ const MyVideos = () => {
   const [contract, setContract] = useState<any>('')
 
   const outputList: any[] = [];
+
+  // const { provider } = useWeb3();
 
   useEffect(() => {
     const fetchData = async () => {
