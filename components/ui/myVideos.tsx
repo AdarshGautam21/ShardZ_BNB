@@ -4,7 +4,6 @@ import Link from 'next/link'
 import lighthouse from '@lighthouse-web3/sdk'
 import contractABI from '@/public/abi/createNft.json'
 import {ethers} from 'ethers';
-import { useWeb3 } from '../main/Web3Context';
 
 const MyVideos: React.FC = () => {
   const videos = [
