@@ -174,9 +174,12 @@ function Nav(){
                 
                 </div>
                 {isConnected?(
-                    <div className='hidden md:block p-[0.1vw] rounded-[0.5vw] bg-gradient-to-tl from-cyan-400 to-black m-2' >
-                    <Link href='/ProfilePage'>
-      
+
+<DropdownMenu  >
+<DropdownMenuTrigger className='text-white text-center' >
+
+<div className='hidden md:block p-[0.1vw] rounded-[0.5vw] bg-gradient-to-tl from-cyan-400 to-black m-2' >
+                    {/* <Link href='/ProfilePage'> */}
                       <div className='flex bg-black rounded-[0.5vw]  w-[10vw] h-[2.5vw] space-x-[1vw]  items-center' >
                      
                           {/* <img className='w-[2vw] rounded-full ' src="@/public/images/profile.png" /> */}
@@ -186,8 +189,28 @@ function Nav(){
                           <p className='  text-[0.7vw] text-white'>Andy William</p>
                           <MenuIcon className='text-white w-[1vw] h-[1vw] cursor-pointer hover:bg-[#33c2ee50] rounded-[0.2vw] ' />
                       </div>
-                    </Link>
+                    {/* </Link> */}
                   </div>
+
+
+
+</DropdownMenuTrigger>
+    <DropdownMenuContent className='bg-black border border-cyan-400 rounded-[2vw] ' >
+      <Link href='/ProfilePage'>
+
+        <DropdownMenuItem className='text-white cursor-pointer' >Profile</DropdownMenuItem>
+      </Link>
+        <Link href='/StudioPage'>
+
+        <DropdownMenuItem className='text-white cursor-pointer' >Creator Studio</DropdownMenuItem>
+        </Link>
+        
+    </DropdownMenuContent>
+</DropdownMenu>
+
+
+
+                    
                 ):(
                     <div className='bg-white rounded-full h-[7vw] sm:h-[5vw] md:h-[3vw] flex justify-center items-center  ' >
                     <Button className='  rounded-full px-[1vw] py-0 text-center md:rounded-[2vw] text-[3vw]  sm:text-[2vw] md:text-[1vw] ' variant="secondary" onClick={connectWallet}>Connect Wallet</Button>
