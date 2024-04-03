@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { upload } from "@lighthouse-web3/sdk";
 import lighthouse from '@lighthouse-web3/sdk'
+import axios from 'axios'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -115,7 +116,7 @@ useEffect(() => {
       try {
           // const provider = new ethers.providers.Web3Provider(window.ethereum);
           const provider = new ethers.BrowserProvider((window as any).ethereum);
-          const signer = await provider.getSigner();
+          const signer = await provider.getSigner(); 
           setSigner(signer);
           console.log(signer);
           const shardZNFTContract = new ethers.Contract("0x23Ef0e4f4031c2d0DeeB4C1f7b8fe097a8276342", contractABI, signer);
@@ -155,20 +156,15 @@ useEffect(() => {
   async function createNFT(signer: JsonRpcSigner, cid: string): Promise<any> {
     try {
       console.log(contract);
-      
-      // const transaction = await contract.createNFT(signer, cid, 'https://gateway.lighthouse.storage/ipfs/QmazbkMEJP5VCpRXoy4g7JkBLDvGpDLjFpguZTz5KETnwo');
       const transaction = await contract.createNFT(signer, cid);
       const receipt = await transaction.wait();
-
-      console.log(receipt);
-      console.log(transaction);
       setUploading(false);
 
       setSuccessful(true);
       
       setTimeout(() => {
         router.push('/VideoPage'); // Redirect to another page
-    }, 6000);
+    }, 5000);
 
       // const events: NFTCreatedEvent[] = receipt.events.filter(
       //   (event: NFTCreatedEvent) => event.event === 'NFTCreated'
@@ -198,8 +194,6 @@ useEffect(() => {
     }
   }
   
-
-
 
 
 
@@ -238,8 +232,16 @@ useEffect(() => {
     // setContract(shardZNFTContract);
     
     
+    // const nft = await axios.post('http://192.168.1.34:8080/api/contract/createNFT', {signer: signerr.address, cid: output.data.Hash})
+    const nft = await createNFT(signerr.address , output.data.Hash)
+
+    // setUploading(false);
+
+    //   setSuccessful(true);
       
-    createNFT(signerr.address , output.data.Hash)
+    //   setTimeout(() => {
+    //     router.push('/VideoPage'); // Redirect to another page
+    // }, 5000);
 
     } catch (error) {
       console.error('Error uploading file:', error);

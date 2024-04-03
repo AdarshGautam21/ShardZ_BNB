@@ -73,19 +73,12 @@ const MyVideos: React.FC = () => {
             }
 
 
-        //   const imageExtensions = [".jpg", ".jpeg", ".png"];
-        //   const nonImageFiles = response.data.fileList.filter(file => {
-        //     const extension = file.fileName.slice(file.fileName.lastIndexOf('.')).toLowerCase(); // Get the file extension
-        //     return !imageExtensions.includes(extension); // Filter out files with image extensions
-        // });
-
         const filteredFiles = response.data.fileList.filter(file => {
           return outputList.includes(file.cid);
         });
 
           setAllVideos(filteredFiles);
           console.log(filteredFiles);
-        //   console.log(response.data.fileList);
           
           
         } else {

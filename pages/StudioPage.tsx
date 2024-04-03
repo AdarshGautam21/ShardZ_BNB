@@ -9,6 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { AlertCircle, Menu } from 'lucide-react';
 import { Video } from 'lucide-react';
 import video from '@/public/images/videoUp.png'
+import Link from 'next/link'
 
 import {
     DropdownMenu,
@@ -141,6 +142,9 @@ function StudioPage() {
             </div>
             </div>
         </div> 
+
+
+
         <div className=' block md:hidden mx-[2vw] mb-[4vw]  ' >
                 <div className='w-full flex h-[8vw] rounded-[2vw] items-center bg-transparent justify-between border border-cyan-400 md:rounded-[0.5vw] relative ' >
                     <input className='w-full text-[3vw] sm:text-[2.5vw] md:text-[1vw] text-white bg-transparent focus:outline-none md:rounded-[1vw] px-[2vw] md:px-[1vw] py-1 '
