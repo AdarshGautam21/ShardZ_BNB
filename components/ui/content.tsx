@@ -110,7 +110,7 @@ const Content = () => {
       
         {allVideos.map((video,index) => (
           <Link href={`/PublishToMarketplace?video=${encodeURIComponent(JSON.stringify(video))}`} key={index} >
-              <div className='bg-gradient-to-r from-[#fff0] via-[#ffffff2d] to-cyan-400 p-[0.1vw] rounded-[0.5vw] mb-[0.5vw]'>
+              <div className='bg-gradient-to-r from-[#fff0] via-[#ffffff2d] to-cyan-400 p-[0.1vw] rounded-[0.5vw] mb-[0.5vw]' key={index}>
                 
                 <div key={video.id} className="bg-black flex items-center p-[0.5vw] text-white rounded-[0.5vw]">
                   <div className='w-4/12 relative' style={{ width: '100%', maxWidth: '300px' }}>
