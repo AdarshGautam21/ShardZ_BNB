@@ -110,9 +110,9 @@ const Content = () => {
       
         {allVideos.map((video,index) => (
           <Link href={`/PublishToMarketplace?video=${encodeURIComponent(JSON.stringify(video))}`} key={index} >
-              <div className='bg-gradient-to-r from-[#fff0] via-[#ffffff2d] to-cyan-400 p-[0.1vw] rounded-[0.5vw] mb-[0.5vw]' key={index}>
+              <div className='bg-gradient-to-r from-[#fff0] via-[#ffffff2d] to-cyan-400 p-[0.1vw] rounded-[0.5vw] mb-[0.5vw]' >
                 
-                <div key={video.id} className="bg-black flex items-center p-[0.5vw] text-white rounded-[0.5vw]">
+                <div className="bg-black flex items-center p-[0.5vw] text-white rounded-[0.5vw]">
                   <div className='w-4/12 relative' style={{ width: '100%', maxWidth: '300px' }}>
 
                   <img src={`https://gateway.lighthouse.storage/ipfs/${video.fileName.substring(video.fileName.lastIndexOf(' ') + 1)}`} alt={video.fileName} className='w-full h-[20vh]'   />
@@ -171,19 +171,24 @@ const Content = () => {
       </div>
       <div className="mx-[2vw] space-y-[2vw]  md:hidden ">
       
-        {videos.map(video => (
-          <Link href='/PublishToMarketplace'>
-            <div className='bg-gradient-to-r from-[#fff0] via-[#ffffff2d] to-cyan-400 p-[0.2vw] rounded-[1vw]' key={video.id}>
+        {allVideos.map((video, index) => (
+          <Link href='/PublishToMarketplace' key={index}>
+            <div className='bg-gradient-to-r from-[#fff0] via-[#ffffff2d] to-cyan-400 p-[0.2vw] rounded-[1vw]'>
                 
                 <div key={video.id} className="bg-black items-center p-[2vw]  text-white rounded-[0.5vw]">
                   <div className='  relative w-full  flex ' >
 
-                  <img src={video.thumbnail.src} className='w-[80%]' alt={video.title}   />
+                  {/* <img src={video.thumbnail.src} className='w-[80%]' alt={video.title}   /> */}
+
+                  <img src={`https://gateway.lighthouse.storage/ipfs/${video.fileName.substring(video.fileName.lastIndexOf(' ') + 1)}`} alt={video.fileName} className='w-full h-[20vh]'   />
 
                   {/* <div className='absolute bottom-[1vw] px-[1vw] text-[1vw] rounded-[0.5vw]  bg-[#0000002f] right-[1vw] ' >{video.time}</div> */}
                   <div className='w-full p-[1vw]  ' >
-                        <p className='text-[3vw] md:text-[1vw] lg:text-[1vw] ' >{video.title}</p>
-                        <p className="  text-[2vw] md:text-[0.8vw] text-[#808191] mb-[0.2vw]">{video.description}</p>
+                        {/* <p className='text-[3vw] md:text-[1vw] lg:text-[1vw] ' >{video.title}</p>
+                        <p className="  text-[2vw] md:text-[0.8vw] text-[#808191] mb-[0.2vw]">{video.description}</p> */}
+                        <p className='text-[2vw] md:text-[1vw] lg:text-[1vw] ' >{video.fileName.substring(0, video.fileName.lastIndexOf(' '))}</p>
+                        {/* <p className='text-[2vw] md:text-[1vw] lg:text-[1vw] ' >{video.title}</p> */}
+                        <p className="  text-[1vw] md:text-[0.8vw] text-[#808191] mb-[0.2vw]">hello eveeryone uiewfuiv uiwe uiv ewuvuwev wev wev uew vuew vuwe vuw vue ev wuiu </p>
                       </div>
                   </div>
                     <div className=" w-full p-[0.8vw] md:p-[1vw] flex items-center">

@@ -69,6 +69,8 @@ const formSchema = z.object({
 const UploadPage =() => {
   const router = useRouter();
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
+  const [portion, setPortion] = useState<number>(50); // Initial portion value
+  const [price, setPrice] = useState<number>(0); // Initial price value
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setSelectedVideo(acceptedFiles[0]);
   }, []);
@@ -160,6 +162,34 @@ function onSubmit(values: z.infer<typeof formSchema>) {
     )
   }
 
+
+
+  
+
+  // Function to handle change in portion input
+  const handlePortionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = parseInt(e.target.value);
+    if (isNaN(newValue)) newValue = 0; // Set to 0 if NaN
+    if (newValue < 1) newValue = 1; // Minimum value
+    if (newValue > 100) newValue = 100; // Maximum value
+    setPortion(newValue);
+  };
+
+  // Function to handle change in price input
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseFloat(e.target.value);
+    setPrice(newValue);
+  };
+
+  // Function to increment/decrement portion by 1
+  const incrementPortion = () => {
+    if (portion < 100) setPortion(portion + 1);
+  };
+
+  const decrementPortion = () => {
+    if (portion > 1) setPortion(portion - 1);
+  };
+
   return (
     <div className='bg-[#0D0D0E]' style={{
       backgroundImage: `url(${ellipse.src})`,
@@ -208,7 +238,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
                   <FormItem>
                     <FormLabel> Description </FormLabel>
                     <FormControl className='rounded-[0.5vw]' >
-                      <textarea rows={10} className='w-full  p-2 bg-[#00000033] border ' {...field} />
+                      <textarea disabled rows={10} className='w-full  p-2 bg-[#00000033] border ' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -259,9 +289,57 @@ function onSubmit(values: z.infer<typeof formSchema>) {
         </div>
           </Form>
 
-
-
       </div>
+
+      <h1 className='text-center text-[#33C1EE] mr-[2vw] mt-[2vw] font-bold text-[2vw]' >Publish to Marketplace</h1>
+
+
+      <div className="flex flex-col items-center justify-center text-white mb-[10vw]">
+      <div className="mb-4">
+        <label className="mr-2">Portion Percentage:</label>
+        <div className="flex">
+          <input
+            type="number"
+            min="1"
+            max="100"
+            value={portion}
+            onChange={handlePortionChange}
+            className="w-20 mr-2 text-center text-black"
+          />
+          <button
+            onClick={incrementPortion}
+            className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-black"
+          >
+            +
+          </button>
+          <button
+            onClick={decrementPortion}
+            className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 ml-1 text-black"
+          >
+            -
+          </button>
+        </div>
+      </div>
+      <div>
+        <label className="mr-2">Price:</label>
+        <input
+          value={price}
+          onChange={handlePriceChange}
+          className="w-20 text-center text-black"
+        />
+      </div>
+      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Submit
+      </button>
+    </div>
+
+
+
+
+
+
+
+
 
       </div>
       <div className=' pb-[5vw] md:hidden' >
@@ -303,7 +381,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
                   <FormItem>
                     <FormLabel> Description </FormLabel>
                     <FormControl className='rounded-[2vw]' >
-                      <textarea rows={10} className='w-full  p-2 bg-[#00000033] border ' {...field} />
+                      <textarea disabled rows={10} className='w-full  p-2 bg-[#00000033] border ' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
