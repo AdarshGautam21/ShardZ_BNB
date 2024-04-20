@@ -59,8 +59,8 @@ contract VideoNFT is ERC721, IContentHash {
         view
         returns (
             uint256,
-            address,
-            address,
+            address, //contract address
+            address, //nft address
             uint256
         )
     {
