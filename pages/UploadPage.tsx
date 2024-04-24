@@ -3,11 +3,11 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '../components/ui/button';
 import "@/app/globals.css";
-import video from '@/public/images/videoUp.png'
-import coin from '@/public/images/coin.png'
+// import video from '@/public/images/videoUp.png'
+// import coin from '@/public/images/coin.png'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import logo from '@/public/images/logo.png';
+// import logo from '@/public/images/logo.png';
 import Sidemenu from '@/components/main/Sidemenu'
 import Nav from '@/components/main/Nav'
 import Lottie, {LottieProps} from 'react-lottie';

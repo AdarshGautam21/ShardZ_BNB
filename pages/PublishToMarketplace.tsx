@@ -50,6 +50,8 @@ import Image from 'next/image';
 import contractABI from '@/public/abi/createNft.json';
 import { useRouter } from 'next/router';
 import { log } from 'console';
+import {abi} from '@/utils/config'
+import {contracts} from '@/utils/config'
 
 // import {ethers} from 'ethers'
 
@@ -190,6 +192,14 @@ function onSubmit(values: z.infer<typeof formSchema>) {
     if (portion > 1) setPortion(portion - 1);
   };
 
+
+
+  const publish = async() =>{
+
+  }
+
+
+
   return (
     <div className='bg-[#0D0D0E]' style={{
       backgroundImage: `url(${ellipse.src})`,
@@ -328,7 +338,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
           className="w-20 text-center text-black"
         />
       </div>
-      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={publish}>
         Submit
       </button>
     </div>
