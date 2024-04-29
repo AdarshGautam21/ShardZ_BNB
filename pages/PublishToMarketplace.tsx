@@ -47,7 +47,7 @@ import { Menu, MenuIcon } from 'lucide-react'
 import VideoSelector from '../components/ui/videoSelector';
 import ThumbnailSelector from '../components/ui/thumbnailSelector';
 import Image from 'next/image';
-import contractABI from '@/public/abi/createNft.json';
+import contractABI from '@/public/abi/assetMarket.json';
 import { useRouter } from 'next/router';
 import { log } from 'console';
 import {abi} from '@/utils/config'
@@ -129,13 +129,12 @@ useEffect(() => {
   
   const initializeProvider = async () => {
       try {
-          // const provider = new ethers.providers.Web3Provider(window.ethereum);
-          const provider = new ethers.BrowserProvider((window as any).ethereum);
-          const signer = await provider.getSigner();
+          // const provider = new ethers.BrowserProvider((window as any).ethereum);
+          const signer = await Providerr.getSigner();
           setSigner(signer);
           console.log(signer);
-          const shardZNFTContract = new ethers.Contract("0x23Ef0e4f4031c2d0DeeB4C1f7b8fe097a8276342", contractABI, signer);
-          setContract(shardZNFTContract);
+          const shardZMarketContract = new ethers.Contract(contracts.AssetMarket, contractABI, signer);
+          setContract(shardZMarketContract);
       } catch (error) {
           console.error("Error initializing provider:", error);
       }
@@ -195,7 +194,12 @@ function onSubmit(values: z.infer<typeof formSchema>) {
 
 
   const publish = async() =>{
-
+    const transaction = await contract.createcontent(videoInfo.cid, '$');
+    const receipt = await transaction.wait();
+    console.log(transaction);
+    console.log(receipt);
+    
+    
   }
 
 
@@ -257,17 +261,16 @@ function onSubmit(values: z.infer<typeof formSchema>) {
 
                 <div className="mt-4 cursor-pointer ">
      
-          <div className='w-[25vw]' >
-            <div className='flex justify-between' >
-              <img
-              src={`https://gateway.lighthouse.storage/ipfs/${videoInfo.fileName.substring(videoInfo.fileName.lastIndexOf(' ') + 1)}`}
-              alt="Selected Thumbnail"
-              className=" w-[10vw] max-h-32 object-cover rounded-lg  border  border-cyan-400"
-              />
-            </div>
-
-          </div>
-    </div>
+                  <div className='w-[25vw]' >
+                    <div className='flex justify-between' >
+                      <img
+                      src={`https://gateway.lighthouse.storage/ipfs/${videoInfo.fileName.substring(videoInfo.fileName.lastIndexOf(' ') + 1)}`}
+                      alt="Selected Thumbnail"
+                      className=" w-[10vw] max-h-32 object-cover rounded-lg  border  border-cyan-400"
+                      />
+                    </div>
+                  </div>
+                </div>
 
             </form>
 
@@ -304,7 +307,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
       <h1 className='text-center text-[#33C1EE] mr-[2vw] mt-[2vw] font-bold text-[2vw]' >Publish to Marketplace</h1>
 
 
-      <div className="flex flex-col items-center justify-center text-white mb-[10vw]">
+      <div className="flex flex-col items-center justify-center text-white pb-[10vw]">
       <div className="mb-4">
         <label className="mr-2">Portion Percentage:</label>
         <div className="flex">

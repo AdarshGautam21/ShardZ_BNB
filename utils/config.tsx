@@ -1,5 +1,5 @@
 import contractABI from '@/public/abi/createNft.json';
-import marketContractABI from '@/public/abi/AssetMarket.json';
+import marketContractABI from '@/public/abi/assetMarket.json';
 import { ethers } from 'ethers';
 
 export const contracts = {
@@ -11,5 +11,3 @@ export const abi = {
     makeNFT: contractABI,
     AssetMarket: marketContractABI
 }
-
-export const Provider = new ethers.BrowserProvider((window as any).ethereum)
