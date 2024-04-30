@@ -24,7 +24,7 @@ import ellipse from '@/public/images/EllipseHome.png'
 import { MenuIcon } from 'lucide-react'
 import Home from '@/public/images/Home.png'
 import Arrow from '@/public/images/Arrow - Right.png'
-import Content from '../components/ui/content';
+import Content from '../components/StudioPage/content';
 import Sidemenu from '@/components/main/Sidemenu'
 import Nav from '@/components/main/Nav'
 function StudioPage() {

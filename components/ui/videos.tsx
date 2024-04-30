@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import thumbnail from '@/public/images/thumbnail.png'
 import Link from 'next/link'
 import lighthouse from '@lighthouse-web3/sdk'
+import SkeletonLoading from '../StudioPage/SkeletonLoading';
 
 const VideoSection = () => {
   const videos = [
@@ -34,6 +35,7 @@ const VideoSection = () => {
   }
   
   const [allVideos, setAllVideos] = useState<FileObject[]>([]);
+  const [isloading, setIsloading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +49,7 @@ const VideoSection = () => {
         });
           setAllVideos(nonImageFiles);
           console.log(allVideos);
+          setIsloading(false)
           // console.log(response.data.fileList);
           
           
@@ -92,7 +95,13 @@ const VideoSection = () => {
   
 
   return (
-    <div className="mx-auto ">
+    <div>
+
+      {isloading ? (
+        <SkeletonLoading/>
+      ) : 
+      (
+        <div className="mx-auto ">
       <div className="grid  grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {allVideos.map((video, index) => (
           <Link href={`/VideoPlayerPage?video=${encodeURIComponent(JSON.stringify(video))}`} key={index}>
@@ -117,6 +126,14 @@ const VideoSection = () => {
         ))}
       </div>
     </div>
+      )}
+    
+      
+
+
+
+    </div>
+    
   );
 };
 

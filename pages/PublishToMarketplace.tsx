@@ -76,6 +76,7 @@ const UploadPage =() => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setSelectedVideo(acceptedFiles[0]);
   }, []);
+  const [minted, setMinted] = useState(false)
 
 
 
@@ -129,8 +130,8 @@ useEffect(() => {
   
   const initializeProvider = async () => {
       try {
-          // const provider = new ethers.BrowserProvider((window as any).ethereum);
-          const signer = await Providerr.getSigner();
+          const provider = new ethers.BrowserProvider((window as any).ethereum);
+          const signer = await provider.getSigner();
           setSigner(signer);
           console.log(signer);
           const shardZMarketContract = new ethers.Contract(contracts.AssetMarket, contractABI, signer);
@@ -193,11 +194,19 @@ function onSubmit(values: z.infer<typeof formSchema>) {
 
 
 
-  const publish = async() =>{
+
+  const mintTokens = async() =>{
     const transaction = await contract.createcontent(videoInfo.cid, '$');
     const receipt = await transaction.wait();
     console.log(transaction);
     console.log(receipt);
+    setMinted(true)
+  }
+
+
+  const publish = async() =>{
+    
+    
     
     
   }
@@ -304,12 +313,31 @@ function onSubmit(values: z.infer<typeof formSchema>) {
 
       </div>
 
-      <h1 className='text-center text-[#33C1EE] mr-[2vw] mt-[2vw] font-bold text-[2vw]' >Publish to Marketplace</h1>
+      {/* <h1 className='text-center text-[#33C1EE] mr-[2vw] mt-[2vw] font-bold text-[2vw]' >Publish to Marketplace</h1> */}
+      <div className="w-full flex justify-center items-center">
+      <h1 className="text-3xl font-bold m-4 text-white text-center">This is example of
+      {" "}
+        <a href="" target="_blank"
+            className="bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 bg-[length:100%_4px] bg-no-repeat bg-bottom">
+            Underline Gradient
+        </a>
+    </h1>
+    </div>
 
 
-      <div className="flex flex-col items-center justify-center text-white pb-[10vw]">
-      <div className="mb-4">
-        <label className="mr-2">Portion Percentage:</label>
+
+    <div className="relative mx-auto max-w-lg rounded-lg text-white p-0.5 shadow-lg">
+    <div className="p-7 rounded-md">
+        <h1 className="font-bold text-xl mb-2">List your Content tokens onto the Marketplace</h1>
+        <p>Want to earn from your content? Create exclusive, limited-edition tokens (think 10,000 total) tied to your work. Sell a portion (e.g., 2,000) on a marketplace, letting your fans become co-owners and setting the price per token to unlock their investment potential!</p>
+        
+    </div>
+  </div>
+
+
+      <div className="flex flex-col items-center justify-center text-white pb-[10vw]  ">
+      <div className="mb-4 ">
+        <label className="mr-2">Number of Tokens (0-10000)</label>
         <div className="flex">
           <input
             type="number"
@@ -341,9 +369,14 @@ function onSubmit(values: z.infer<typeof formSchema>) {
           className="w-20 text-center text-black"
         />
       </div>
-      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={publish}>
-        Submit
+      <div className='flex'>
+      <button className={minted ? "mt-4 px-4 py-2 bg-gray-300 text-gray-500 cursor-not-allowed" : "mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"} onClick={mintTokens}>
+        Mint Tokens
       </button>
+      <button disabled={!minted} className={minted ? "mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-[2vw]" : 'ml-[2vw] mt-4 px-4 py-2 bg-gray-300 text-gray-500 cursor-not-allowed'} onClick={publish}>
+        Publish to Marketplace
+      </button>
+      </div>
     </div>
 
 
