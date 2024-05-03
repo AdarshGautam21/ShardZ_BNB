@@ -52,6 +52,7 @@ import { useRouter } from 'next/router';
 import { log } from 'console';
 import {abi} from '@/utils/config'
 import {contracts} from '@/utils/config'
+import {CID} from 'multiformats/cid';
 
 // import {ethers} from 'ethers'
 
@@ -199,7 +200,7 @@ function onSubmit(values: z.infer<typeof formSchema>) {
     const transaction = await contract.createcontent(videoInfo.cid, '$');
     const receipt = await transaction.wait();
     console.log(transaction);
-    console.log(receipt);
+    console.log(receipt.logs[0].address);
     setMinted(true)
   }
 
@@ -315,12 +316,12 @@ function onSubmit(values: z.infer<typeof formSchema>) {
 
       {/* <h1 className='text-center text-[#33C1EE] mr-[2vw] mt-[2vw] font-bold text-[2vw]' >Publish to Marketplace</h1> */}
       <div className="w-full flex justify-center items-center">
-      <h1 className="text-3xl font-bold m-4 text-white text-center">This is example of
+      <h1 className="text-3xl font-bold m-4 text-white text-center">Publish your Content to 
       {" "}
-        <a href="" target="_blank"
+        <Link href={'Marketplace'}
             className="bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 bg-[length:100%_4px] bg-no-repeat bg-bottom">
-            Underline Gradient
-        </a>
+            Marketplace
+        </Link>
     </h1>
     </div>
 

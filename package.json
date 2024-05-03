@@ -30,6 +30,7 @@
     "ethers": "^6.11.1",
     "lucide-react": "^0.324.0",
     "multer-s3": "^3.0.1",
+    "multiformats": "^13.1.0",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
